@@ -3,7 +3,6 @@
 
 # NOTE: adroit env code is currently being cleaned up
 
-
 from collections import deque
 from typing import Any, NamedTuple
 import warnings
@@ -387,7 +386,7 @@ class AdroitEnv:
 
 
 
-def make(task_name, frame_stack, action_repeat, seed, device=torch.device('cuda')):
+def make(task_name, frame_stack, action_repeat, seed, device):
     env_name = task_name + '-v0'
     env = AdroitEnv(env_name, test_image=False, num_repeats=action_repeat,
             num_frames=frame_stack, env_feature_type='pixels',

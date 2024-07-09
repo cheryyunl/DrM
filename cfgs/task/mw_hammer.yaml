@@ -2,4 +2,4 @@ defaults:
   - metaworld
   - _self_
 
-task_name: soccer
+task_name: hammer

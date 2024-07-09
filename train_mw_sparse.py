@@ -1,4 +1,5 @@
 import os
+os.environ['CUDA_VISIBLE_DEVICES'] = '4,5,6'
 os.environ['MKL_SERVICE_FORCE_INTEL'] = '1'
 os.environ['MUJOCO_GL'] = 'egl'
 
@@ -143,7 +144,9 @@ class Workspace:
                                             eval_mode=True)
                 time_step = self.eval_env.step(action)
                 episode_sr = episode_sr or time_step.success
-                total_reward += time_step.reward
+                if time_step.success:
+                    total_reward += 1
+                    break
                 step += 1
 
             total_sr += episode_sr
@@ -230,7 +233,11 @@ class Workspace:
 
             # take env step
             time_step = self.train_env.step(action)
-            episode_reward += time_step.reward
+            if time_step.success:
+                reward = 1
+            else:
+                reward = 0
+            episode_reward += reward
             self.replay_storage.add(time_step)
             #self.train_video_recorder.record(time_step.observation)
             episode_step += 1
@@ -253,7 +260,7 @@ class Workspace:
 
 @hydra.main(config_path='cfgs', config_name='config')
 def main(cfgs):
-    from train_mw import Workspace as W
+    from train_mw_sparse import Workspace as W
     root_dir = Path.cwd()
     workspace = W(cfgs)
     snapshot = root_dir / 'snapshot.pt'

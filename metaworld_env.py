@@ -170,9 +170,9 @@ class ExtendedTimeStep(NamedTuple):
         else:
             return tuple.__getitem__(self, attr)
 class metaworld_wrapper():
-    def __init__(self, env, nstack=3):
+    def __init__(self, env, nstack):
         self._env = env
-        self.nstack = 3
+        self.nstack = nstack
         wos = env.obs_space['image']  # wrapped ob space
         low = np.repeat(wos.low, self.nstack, axis=-1)
         high = np.repeat(wos.high, self.nstack, axis=-1)
